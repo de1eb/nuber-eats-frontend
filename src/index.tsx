@@ -1,7 +1,8 @@
 import { ApolloProvider } from "@apollo/client";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App";
+import { RouterProvider } from "react-router-dom";
+import router from "./Router";
 import { client } from "./apollo";
 import reportWebVitals from "./reportWebVitals";
 import "./styles/styles.css";
@@ -10,7 +11,7 @@ const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
 root.render(
   <React.StrictMode>
     <ApolloProvider client={client}>
-      <App />
+      <RouterProvider router={router} />
     </ApolloProvider>
   </React.StrictMode>
 );
