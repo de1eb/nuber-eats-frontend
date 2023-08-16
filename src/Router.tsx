@@ -5,7 +5,7 @@ import { Login } from "./pages/login";
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "login",
     element: <Login />,
     children: [],
     errorElement: <FormError errorMessage="Cannot load login page" />,
