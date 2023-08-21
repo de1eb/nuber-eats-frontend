@@ -3,7 +3,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { HelmetProvider } from "react-helmet-async";
 import { RouterProvider } from "react-router-dom";
-import router from "./Router";
+import { router } from "./Router";
 import { client } from "./apollo";
 import reportWebVitals from "./reportWebVitals";
 import "./styles/styles.css";
