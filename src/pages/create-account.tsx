@@ -40,7 +40,7 @@ export const CreateAccount = () => {
     } = data;
     if (ok) {
       alert("Account Created! Log in now!");
-      navigate("/login", { replace: true });
+      navigate("/login");
     }
   };
   const [createAccountMutation, { loading, data: createAccountMutationResult }] = useMutation<CreateAccountMutation, CreateAccountMutationVariables>(
