@@ -12,28 +12,23 @@ import { EditProfile } from "./pages/user/edit-profile";
 
 export const router = createBrowserRouter([
   {
-    path: "/",
     Component: Root,
+    path: "/",
     children: [
       {
         Component: NotFound,
       },
       {
+        path: "confirm",
+        Component: ConfirmEmail,
+      },
+      {
+        path: "loggedIn",
         Component: LoggedIn,
         children: [
           {
             path: "restaurants",
             Component: Restaurants,
-            children: [],
-          },
-          {
-            path: "confirm",
-            Component: ConfirmEmail,
-            children: [
-              {
-                path: "code:code",
-              },
-            ],
           },
           {
             path: "edit-profile",
@@ -45,16 +40,14 @@ export const router = createBrowserRouter([
         Component: LoggedOut,
         children: [
           {
-            path: "create-account",
-            Component: CreateAccount,
-            children: [],
-            errorElement: <FormError errorMessage="Cannot create account" />,
-          },
-          {
             path: "login",
             Component: Login,
-            children: [],
             errorElement: <FormError errorMessage="Cannot load login page" />,
+          },
+          {
+            path: "create-account",
+            Component: CreateAccount,
+            errorElement: <FormError errorMessage="Cannot create account" />,
           },
         ],
       },

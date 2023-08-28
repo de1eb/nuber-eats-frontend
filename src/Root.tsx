@@ -1,11 +1,16 @@
 import { useReactiveVar } from "@apollo/client";
-import { isLoggedInVar } from "./apollo";
-import { LoggedIn } from "./pages/logged-in";
-import { LoggedOut } from "./pages/logged-out";
+import { Navigate, Outlet } from "react-router-dom";
+import { authTokenVar } from "./apollo";
 
 function Root() {
-  const isLoggedIn = useReactiveVar(isLoggedInVar);
-  return <div>{isLoggedIn ? <LoggedIn /> : <LoggedOut />}</div>;
+  // const isLoggedIn = makeVar(localStorage.getItem(LOCALSTORAGE_TOKEN));
+  const isLoggedIn = useReactiveVar(authTokenVar);
+  return (
+    <div>
+      <Outlet />
+      {isLoggedIn ? <Navigate to="loggedIn" /> : <Navigate to="login" />}
+    </div>
+  );
 }
 
 export default Root;

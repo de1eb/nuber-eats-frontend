@@ -14,8 +14,9 @@ export const LoggedIn = () => {
   return (
     <div>
       <Header />
-      {data.me.role === "Client" && <Outlet />}
-      <Navigate to="/restaurants" />
+      <Outlet />
+      {/* {data.me.role === "Client" && <Outlet />} */}
+      {data.me.role === "Client" && <Navigate to="restaurants" />}
     </div>
   );
 };
