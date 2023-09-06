@@ -375,7 +375,6 @@ export type Query = {
   getOrder: GetOrdersOutput;
   getOrders: GetOrdersOutput;
   getPayments: GetPaymentsOutput;
-  hi: Scalars['Boolean']['output'];
   me: User;
   restaurant: RestaurantOutput;
   restaurants: RestaurantsOutput;

@@ -2,7 +2,7 @@ import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { Link } from "react-router-dom";
-import { authTokenVar } from "../apollo";
+import { authTokenVar, client } from "../apollo";
 import { LOCALSTORAGE_TOKEN } from "../constants";
 import { useMe } from "../hooks/useMe";
 import nuberLogo from "../images/logo.svg";
@@ -12,6 +12,7 @@ export const Header: React.FC = () => {
   const onClick = () => {
     localStorage.removeItem(LOCALSTORAGE_TOKEN);
     authTokenVar(null);
+    client.clearStore();
   };
 
   return (

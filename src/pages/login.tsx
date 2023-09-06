@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { LoginMutation, LoginMutationVariables } from "../__generated__/graphql";
-import { authTokenVar, isLoggedInVar } from "../apollo";
+import { authTokenVar } from "../apollo";
 import { Button } from "../components/button";
 import { FormError } from "../components/form-error";
 import { LOCALSTORAGE_TOKEN } from "../constants";
@@ -39,7 +39,6 @@ export const Login = () => {
     if (ok && token) {
       localStorage.setItem(LOCALSTORAGE_TOKEN, token);
       authTokenVar(token);
-      isLoggedInVar(true);
     }
   };
   const [loginMutation, { data: LoginMutationResult, loading }] = useMutation<LoginMutation, LoginMutationVariables>(LOGIN_MUTATION, { onCompleted });
