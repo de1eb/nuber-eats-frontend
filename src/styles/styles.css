@@ -628,6 +628,11 @@ video {
   pointer-events: none;
 }
 
+.mx-2 {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
@@ -693,8 +698,8 @@ video {
   width: 4rem;
 }
 
-.w-3\/12 {
-  width: 25%;
+.w-3\/4 {
+  width: 75%;
 }
 
 .w-44 {
@@ -768,6 +773,10 @@ video {
 
 .gap-y-10 {
   row-gap: 2.5rem;
+}
+
+.rounded {
+  border-radius: 0.25rem;
 }
 
 .rounded-full {
@@ -945,6 +954,16 @@ video {
 .group:hover .group-hover\:bg-gray-100 {
   --tw-bg-opacity: 1;
   background-color: rgb(243 244 246 / var(--tw-bg-opacity));
+}
+
+@media (min-width: 768px) {
+  .md\:w-3\/12 {
+    width: 25%;
+  }
+
+  .md\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 @media (min-width: 1024px) {

@@ -48,8 +48,8 @@ export const Restaurants = () => {
   const onPrevPageClick = () => setPage((current) => current - 1);
   return (
     <div>
-      <form className="bg-gray-800 w-full py-40 flex items-center justify-center">
-        <input type="Search" className="rounded-md border-0 w-3/12" placeholder="Search restaurants..." />
+      <form name="search" className="bg-gray-800 w-full py-40 flex items-center justify-center">
+        <input type="Search" className="rounded-md border-0 w-3/4 md:w-3/12" placeholder="Search restaurants..." />
       </form>
       {!loading && (
         <div className="max-w-screen-2xl pb-20 mx-auto mt-8">
@@ -67,7 +67,7 @@ export const Restaurants = () => {
               </div>
             ))}
           </div>
-          <div className="grid mt-16 grid-cols-3 gap-x-5 gap-y-10">
+          <div className="grid mt-16 md:grid-cols-3 gap-x-5 gap-y-10">
             {data?.restaurants.results?.map((restaurant) => (
               <Restaurant
                 key={restaurant.id}

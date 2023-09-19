@@ -72,7 +72,7 @@ export const EditProfile = () => {
         <title>Edit Profile | Nuber Eats</title>
       </Helmet>
       <h4 className="font-semibold text-2xl mb-3">Edit Profile</h4>
-      <form onSubmit={handleSubmit(onSubmit)} className="grid max-w-screen-sm gap-3 mt-5 w-full mb-5">
+      <form name="editProfile" onSubmit={handleSubmit(onSubmit)} className="grid max-w-screen-sm gap-3 mt-5 w-full mb-5">
         <input
           {...register("email", {
             pattern:
