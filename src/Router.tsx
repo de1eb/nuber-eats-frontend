@@ -34,6 +34,10 @@ export const router = createBrowserRouter([
             path: "edit-profile",
             Component: EditProfile,
           },
+          // {
+          //   path: "search",
+          //   Component:
+          // }
         ],
       },
       {

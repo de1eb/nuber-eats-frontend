@@ -1,7 +1,11 @@
 import { gql, useQuery } from "@apollo/client";
 import { useState } from "react";
+import { Helmet } from "react-helmet-async";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { RestaurantsPageQuery, RestaurantsPageQueryVariables } from "../../__generated__/graphql";
 import { Restaurant } from "../../components/restaurant";
+import { RESTAURANT_FRAGMENT } from "../../fragments";
 
 const RESTAURANTS_QUERY = gql`
   query restaurantsPage($input: RestaurantsInput!) {
@@ -22,18 +26,16 @@ const RESTAURANTS_QUERY = gql`
       totalPages
       totalResults
       results {
-        id
-        name
-        coverImg
-        category {
-          name
-        }
-        address
-        isPromoted
+        ...RestaurantParts
       }
     }
+    ${RESTAURANT_FRAGMENT}
   }
 `;
+
+interface IFormProps {
+  searchTerm: string;
+}
 
 export const Restaurants = () => {
   const [page, setPage] = useState(1);
@@ -46,10 +48,27 @@ export const Restaurants = () => {
   });
   const onNextPageClick = () => setPage((current) => current + 1);
   const onPrevPageClick = () => setPage((current) => current - 1);
+  const { register, handleSubmit, getValues } = useForm<IFormProps>();
+  const navigate = useNavigate();
+  const onSearchSubmit = () => {
+    const { searchTerm } = getValues();
+    navigate({
+      pathname: "/search",
+      search: `?term=${searchTerm}`,
+    });
+  };
   return (
     <div>
-      <form name="search" className="bg-gray-800 w-full py-40 flex items-center justify-center">
-        <input type="Search" className="rounded-md border-0 w-3/4 md:w-3/12" placeholder="Search restaurants..." />
+      <Helmet>
+        <title>Home | Nuber Eats</title>
+      </Helmet>
+      <form name="search" onSubmit={handleSubmit(onSearchSubmit)} className="bg-gray-800 w-full py-40 flex items-center justify-center">
+        <input
+          {...register("searchTerm", { required: true, min: 3 })}
+          type="Search"
+          className="rounded-md border-0 w-3/4 md:w-3/12"
+          placeholder="Search restaurants..."
+        />
       </form>
       {!loading && (
         <div className="max-w-screen-2xl pb-20 mx-auto mt-8">
@@ -57,7 +76,6 @@ export const Restaurants = () => {
             {data?.allCategories.categories?.map((category) => (
               <div key={category.id} className="flex flex-col group items-center cursor-pointer">
                 <div
-                  key="1"
                   className="w-16 h-16 bg-cover group-hover:bg-gray-100 rounded-full"
                   style={{ backgroundImage: `url('data:image/jpeg;base64, ${category.coverImg}')` || "" }}
                 ></div>
