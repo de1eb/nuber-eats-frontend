@@ -82,6 +82,7 @@ export const Restaurants = () => {
       search: `?term=${searchTerm}`,
     });
   };
+
   return (
     <div>
       <Helmet>
@@ -112,7 +113,7 @@ export const Restaurants = () => {
           </div>
           <div className="grid mt-16 md:grid-cols-3 gap-x-5 gap-y-10">
             {data?.restaurants.results?.map((restaurant) => (
-              <Restaurant key={restaurant.id} id={restaurant.id + ""} coverImg={restaurant.coverImg} name={restaurant.name} categoryName={restaurant.name} />
+              <Restaurant key="1" restaurant={restaurant} />
             ))}
           </div>
           <div className="grid grid-cols-3 text-center max-w-md items-center mx-auto mt-10">

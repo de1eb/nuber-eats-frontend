@@ -1,6 +1,6 @@
-import { gql } from "@apollo/client";
+import { graphql } from "./__generated__";
 
-export const RESTAURANT_FRAGMENT = gql`
+export const RESTAURANT_FRAGMENT = graphql(`
   fragment RestaurantParts on Restaurant {
     id
     name
@@ -11,7 +11,7 @@ export const RESTAURANT_FRAGMENT = gql`
     address
     isPromoted
   }
-`;
+`);
 
 // const Restaurant_Fragment = graphql(`
 //   fragment RestaurantParts on Restaurant {
