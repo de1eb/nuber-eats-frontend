@@ -1,8 +1,8 @@
 import { gql, useApolloClient, useMutation } from "@apollo/client";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
-import { EditProfileMutation, EditProfileMutationVariables } from "../../__generated__/graphql";
 import { Button } from "../../components/button";
+import { EditProfileMutation, EditProfileMutationVariables } from "../../gql/graphql";
 import { useMe } from "../../hooks/useMe";
 
 const EDIT_PROFILE_MUTATION = gql`

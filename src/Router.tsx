@@ -6,7 +6,6 @@ import { Restaurants } from "./pages/client/restaurants";
 import { Search } from "./pages/client/search";
 import { CreateAccount } from "./pages/create-account";
 import { LoggedIn } from "./pages/logged-in";
-import { LoggedOut } from "./pages/logged-out";
 import { Login } from "./pages/login";
 import { ConfirmEmail } from "./pages/user/confirm-email";
 import { EditProfile } from "./pages/user/edit-profile";
@@ -20,13 +19,12 @@ export const router = createBrowserRouter([
         Component: NotFound,
       },
       {
-        path: "confirm",
-        Component: ConfirmEmail,
-      },
-      {
-        path: "loggedIn",
         Component: LoggedIn,
         children: [
+          {
+            path: "confirm",
+            Component: ConfirmEmail,
+          },
           {
             path: "restaurants",
             Component: Restaurants,
@@ -42,19 +40,14 @@ export const router = createBrowserRouter([
         ],
       },
       {
-        Component: LoggedOut,
-        children: [
-          {
-            path: "login",
-            Component: Login,
-            errorElement: <FormError errorMessage="Cannot load login page" />,
-          },
-          {
-            path: "create-account",
-            Component: CreateAccount,
-            errorElement: <FormError errorMessage="Cannot create account" />,
-          },
-        ],
+        path: "login",
+        Component: Login,
+        errorElement: <FormError errorMessage="Cannot load login page" />,
+      },
+      {
+        path: "create-account",
+        Component: CreateAccount,
+        errorElement: <FormError errorMessage="Cannot create account" />,
       },
     ],
     errorElement: <FormError errorMessage="Cannot load main page" />,

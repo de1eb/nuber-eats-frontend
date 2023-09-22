@@ -1,4 +1,4 @@
-import { graphql } from "./__generated__";
+import { graphql } from "./gql";
 
 export const RESTAURANT_FRAGMENT = graphql(`
   fragment RestaurantParts on Restaurant {

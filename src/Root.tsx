@@ -1,32 +1,15 @@
 import { useReactiveVar } from "@apollo/client";
-import { Navigate, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { authTokenVar } from "./apollo";
+import { LoggedIn } from "./pages/logged-in";
+import { Login } from "./pages/login";
 
 function Root() {
-  // const isLoggedIn = useReactiveVar(authTokenVar);
-  // useEffect(() => {
-  //   if (isLoggedIn) {
-  //     return <Navigate to="loggedIn" />;
-  //   } else {
-  //     return <Navigate to="login" />;
-  //   }
-  // }, [isLoggedIn]);
-
-  // return (
-  //   <div>
-  //     <Outlet />
-  //   </div>
-  // );
   const isLoggedIn = useReactiveVar(authTokenVar);
-  // const [route, setRoute] = useState("");
-  // useEffect(() => {
-  //   isLoggedIn ? setRoute("loggedIn") : setRoute("login");
-  // }, [isLoggedIn]);
   return (
     <div>
       <Outlet />
-      {/* {route && <Navigate to={route} />} */}
-      {isLoggedIn ? <Navigate to="loggedIn" /> : <Navigate to="login" />}
+      {isLoggedIn ? <LoggedIn /> : <Login />}
     </div>
   );
 }

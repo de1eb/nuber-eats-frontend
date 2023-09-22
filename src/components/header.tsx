@@ -1,7 +1,7 @@
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { authTokenVar, client } from "../apollo";
 import { LOCALSTORAGE_TOKEN } from "../constants";
 import { useMe } from "../hooks/useMe";
@@ -9,10 +9,12 @@ import nuberLogo from "../images/logo.svg";
 
 export const Header: React.FC = () => {
   const { data } = useMe();
+  const navigate = useNavigate();
   const onClick = () => {
     localStorage.removeItem(LOCALSTORAGE_TOKEN);
     authTokenVar(null);
     client.clearStore();
+    navigate("/");
   };
 
   return (
@@ -24,11 +26,11 @@ export const Header: React.FC = () => {
       )}
       <header className="py-4">
         <div className="w-full px-5 xl:px-0 max-w-screen-2xl mx-auto flex justify-between items-center">
-          <Link to="/loggedIn/restaurants">
+          <Link to="/restaurants">
             <img src={nuberLogo} className="w-44" alt="Nuber Eats" />
           </Link>
           <span className="text-xs">
-            <Link to="edit-profile">
+            <Link to="/edit-profile">
               <FontAwesomeIcon icon={faUser} className="text-3xl" />
             </Link>
           </span>

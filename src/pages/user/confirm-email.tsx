@@ -1,7 +1,7 @@
 import { gql, useApolloClient, useMutation } from "@apollo/client";
 import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
-import { VerifyEmailMutation, VerifyEmailMutationVariables } from "../../__generated__/graphql";
+import { VerifyEmailMutation, VerifyEmailMutationVariables } from "../../gql/graphql";
 import { useMe } from "../../hooks/useMe";
 import { useQueryParams } from "../../hooks/useQueryParams";
 

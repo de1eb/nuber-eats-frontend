@@ -2,8 +2,8 @@ import { useLazyQuery } from "@apollo/client";
 import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { useLocation, useNavigate } from "react-router-dom";
-import { graphql } from "../../__generated__";
-import { SearchRestaurantQuery, SearchRestaurantQueryVariables } from "../../__generated__/graphql";
+import { graphql } from "../../gql";
+import { SearchRestaurantQuery, SearchRestaurantQueryVariables } from "../../gql/graphql";
 
 const SEARCH_RESTAURANT = graphql(`
   query searchRestaurant($input: SearchRestaurantInput!) {
@@ -49,7 +49,8 @@ export const Search = () => {
         },
       },
     });
-  }, [navigate, location]);
+  }, []);
+  console.log(loading, data, called);
   return (
     <div>
       <Helmet>

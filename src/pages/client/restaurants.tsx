@@ -3,9 +3,9 @@ import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { graphql } from "../../__generated__/gql";
-import { RestaurantsPageQuery, RestaurantsPageQueryVariables } from "../../__generated__/graphql";
 import { Restaurant } from "../../components/restaurant";
+import { graphql } from "../../gql";
+import { RestaurantsPageQuery, RestaurantsPageQueryVariables } from "../../gql/graphql";
 const RESTAURANTS_QUERY = graphql(`
   query restaurantsPage($input: RestaurantsInput!) {
     allCategories {
@@ -69,8 +69,7 @@ export const Restaurants = () => {
       },
     },
   });
-  console.log(data?.allCategories);
-  console.log(data?.restaurants);
+
   const onNextPageClick = () => setPage((current) => current + 1);
   const onPrevPageClick = () => setPage((current) => current - 1);
   const { register, handleSubmit, getValues } = useForm<IFormProps>();
@@ -112,9 +111,9 @@ export const Restaurants = () => {
             ))}
           </div>
           <div className="grid mt-16 md:grid-cols-3 gap-x-5 gap-y-10">
-            {data?.restaurants.results?.map((restaurant) => (
-              <Restaurant key="1" restaurant={restaurant} />
-            ))}
+            {data?.restaurants.results?.map((restaurant, index) => {
+              return <Restaurant key={index} restaurant={restaurant} />;
+            })}
           </div>
           <div className="grid grid-cols-3 text-center max-w-md items-center mx-auto mt-10">
             {page > 1 ? (
