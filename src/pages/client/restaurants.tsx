@@ -30,31 +30,6 @@ const RESTAURANTS_QUERY = graphql(`
     }
   }
 `);
-// const RESTAURANTS_QUERY = gql`
-//   query restaurantsPage($input: RestaurantsInput!) {
-//     allCategories {
-//       ok
-//       error
-//       categories {
-//         id
-//         name
-//         coverImg
-//         slug
-//         restaurantCount
-//       }
-//     }
-//     restaurants(input: $input) {
-//       ok
-//       error
-//       totalPages
-//       totalResults
-//       results {
-//         ...RestaurantParts
-//       }
-//     }
-//     ${RESTAURANT_FRAGMENT}
-//   }
-// `;
 
 interface IFormProps {
   searchTerm: string;
@@ -77,7 +52,7 @@ export const Restaurants = () => {
   const onSearchSubmit = () => {
     const { searchTerm } = getValues();
     navigate({
-      pathname: "/search",
+      pathname: "/home/search",
       search: `?term=${searchTerm}`,
     });
   };

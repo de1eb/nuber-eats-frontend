@@ -67,7 +67,7 @@ export const EditProfile = () => {
     });
   };
   return (
-    <div className="mt-52 flex flex-col justify-center items-start">
+    <div className="mt-52 flex flex-col justify-center items-center px-5">
       <Helmet>
         <title>Edit Profile | Nuber Eats</title>
       </Helmet>

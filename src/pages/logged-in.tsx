@@ -14,7 +14,7 @@ export const LoggedIn = () => {
       client.clearStore();
       return <Navigate to="/login" />;
     }
-
+    console.log(error);
     return <FormError errorMessage="Cannot load page" />;
   }
   if (!data || loading) {
@@ -28,7 +28,7 @@ export const LoggedIn = () => {
     <div>
       <Header />
       <Outlet />
-      {data.me.role === "Client" && <Navigate to="/restaurants" />}
+      {data.me.role === "Client" && <Navigate to="restaurants" />}
     </div>
   );
 };
