@@ -13,6 +13,16 @@ export const RESTAURANT_FRAGMENT = graphql(`
   }
 `);
 
+export const CATEGORY_FRAGMENT = graphql(`
+  fragment CategoryParts on Category {
+    id
+    name
+    coverImg
+    slug
+    restaurantCount
+  }
+`)
+
 // const Restaurant_Fragment = graphql(`
 //   fragment RestaurantParts on Restaurant {
 //     id

@@ -2,7 +2,7 @@ import { useQuery } from "@apollo/client";
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Restaurant } from "../../components/restaurant";
 import { graphql } from "../../gql";
 import { RestaurantsPageQuery, RestaurantsPageQueryVariables } from "../../gql/graphql";
@@ -74,15 +74,17 @@ export const Restaurants = () => {
         <div className="max-w-screen-2xl pb-20 mx-auto mt-8">
           <div className="flex justify-around max-w-sm mx-auto">
             {data?.allCategories.categories?.map((category) => (
-              <div key={category.id} className="flex flex-col group items-center cursor-pointer">
-                <div
-                  className="w-16 h-16 bg-cover group-hover:bg-gray-100 rounded-full"
-                  style={{ backgroundImage: `url('data:image/jpeg;base64, ${category.coverImg}')` || "" }}
-                ></div>
-                <span key="2" className="mt-1 text-sm text-center font-medium">
-                  {category.name}
-                </span>
-              </div>
+              <Link key={category.id} to={`/home/category/${category.slug}`}>
+                <div className="flex flex-col group items-center cursor-pointer">
+                  <div
+                    className="w-16 h-16 bg-cover group-hover:bg-gray-100 rounded-full"
+                    style={{ backgroundImage: `url('data:image/jpeg;base64, ${category.coverImg}')` || "" }}
+                  ></div>
+                  <span key="2" className="mt-1 text-sm text-center font-medium">
+                    {category.name}
+                  </span>
+                </div>
+              </Link>
             ))}
           </div>
           <div className="grid mt-16 md:grid-cols-3 gap-x-5 gap-y-10">
