@@ -3,6 +3,7 @@ import Root from "./Root";
 import { FormError } from "./components/form-error";
 import { NotFound } from "./pages/404";
 import { Category } from "./pages/client/category";
+import { Restaurant } from "./pages/client/restaurant";
 import { Restaurants } from "./pages/client/restaurants";
 import { Search } from "./pages/client/search";
 import { CreateAccount } from "./pages/create-account";
@@ -30,6 +31,10 @@ export const router = createBrowserRouter([
           {
             path: "restaurants",
             Component: Restaurants,
+          },
+          {
+            path: "restaurants/:id",
+            Component: Restaurant,
           },
           {
             path: "edit-profile",
