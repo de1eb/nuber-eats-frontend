@@ -1,6 +1,7 @@
 import { useQuery } from "@apollo/client";
 import { useParams } from "react-router-dom";
-import { graphql } from "../../gql";
+import { RESTAURANT_FRAGMENT } from "../../fragments";
+import { FragmentType, graphql, useFragment } from "../../gql";
 import { RestaurantQuery, RestaurantQueryVariables } from "../../gql/graphql";
 
 const RESTAURANT_QUERY = graphql(`
@@ -19,7 +20,10 @@ type TRestaurantParams = {
   id: string;
 };
 
-export const Restaurant = () => {
+type RestaurantProps = {
+  restaurant: FragmentType<typeof RESTAURANT_FRAGMENT>;
+};
+export const Restaurant = (props: RestaurantProps) => {
   const { id } = useParams() as TRestaurantParams;
   const { loading, data } = useQuery<RestaurantQuery, RestaurantQueryVariables>(RESTAURANT_QUERY, {
     variables: {
@@ -28,6 +32,10 @@ export const Restaurant = () => {
       },
     },
   });
-  console.log(data);
-  return <h1>Restaurant</h1>;
+  const { coverImg } = useFragment(RESTAURANT_FRAGMENT, props.restaurant);
+  return (
+    <div>
+      <div className="bg-red-500 py-48" style={{ backgroundImage: `url(${coverImg})` }}></div>
+    </div>
+  );
 };
