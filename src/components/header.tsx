@@ -18,6 +18,17 @@ export const Header: React.FC = () => {
     navigate("/");
   };
 
+  const onClickLogo = () => {
+    switch (data?.me.role) {
+      case "Client":
+        navigate("/home/restaurants");
+        break;
+      case "Owner":
+        navigate("/home/myrestaurants");
+        break;
+    }
+  };
+
   return (
     <>
       {!data?.me.verified && (
@@ -27,9 +38,9 @@ export const Header: React.FC = () => {
       )}
       <header className="py-4">
         <div className="w-full px-5 xl:px-0 max-w-screen-2xl mx-auto flex justify-between items-center">
-          <Link to="restaurants">
+          <button onClick={onClickLogo}>
             <img src={nuberLogo} className="w-44" alt="Nuber Eats" />
-          </Link>
+          </button>
           <span className="text-xs flex items-center">
             <span className="text-xs relative group">
               <Link to="edit-profile">

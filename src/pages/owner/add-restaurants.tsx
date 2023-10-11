@@ -1,5 +1,7 @@
 import { useMutation } from "@apollo/client";
+import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
+import { Button } from "../../components/button";
 import { graphql } from "../../gql";
 import { CreateRestaurantMutation, CreateRestaurantMutationVariables } from "../../gql/graphql";
 
@@ -24,5 +26,18 @@ export const AddRestaurant = () => {
   const onSubmit = () => {
     console.log(getValues());
   };
-  return <div></div>;
+  return (
+    <div className="container">
+      <Helmet>
+        <title>Add Restaurant | Nuber Eats</title>
+      </Helmet>
+      <h1>Add Restaurant</h1>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <input className="input" type="text" placeholder="Name" {...register("name", { required: "Name is required" })} />
+        <input className="input" type="text" placeholder="Address" {...register("address", { required: "Address is required" })} />
+        <input className="input" type="text" placeholder="Category Name" {...register("categoryName", { required: "Category Name is required" })} />
+        <Button loading={loading} canClick={formState.isValid} actionText="Create Restaurant" />
+      </form>
+    </div>
+  );
 };
