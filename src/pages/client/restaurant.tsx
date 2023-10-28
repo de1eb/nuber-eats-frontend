@@ -36,7 +36,7 @@ export const Restaurant = () => {
       <Helmet>
         <title>{fragment?.name || ""} | Nuber Eats</title>
       </Helmet>
-      <div className="bg-gray-800 bg-cover bg-center py-48" style={{ backgroundImage: `url('data:image/jpeg;base64, ${fragment?.coverImg}')` }}>
+      <div className="bg-gray-800 bg-cover bg-center py-48" style={{ backgroundImage: `url(${fragment?.coverImg})` }}>
         <div className="bg-white w-3/12 py-8 pl-48">
           <h4 className="text-4xl mb-3">{fragment?.name}</h4>
           <h5 className="text-sm font-light mb-2">{fragment?.category?.name}</h5>

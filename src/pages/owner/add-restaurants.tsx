@@ -6,6 +6,7 @@ import { Button } from "../../components/button";
 import { FormError } from "../../components/form-error";
 import { graphql } from "../../gql";
 import { CreateRestaurantMutation, CreateRestaurantMutationVariables } from "../../gql/graphql";
+import { MY_RESTAURANTS_QUERY } from "./my-restaurants";
 
 const CREATE_RESTAURANT_MUTATION = graphql(`
   mutation createRestaurant($input: CreateRestaurantInput!) {
@@ -34,6 +35,7 @@ export const AddRestaurant = () => {
   };
   const [createRestaurantMutation, { data }] = useMutation<CreateRestaurantMutation, CreateRestaurantMutationVariables>(CREATE_RESTAURANT_MUTATION, {
     onCompleted,
+    refetchQueries: [{ query: MY_RESTAURANTS_QUERY }],
   });
 
   const { register, getValues, formState, setError, handleSubmit } = useForm<IFormProps>({ mode: "onChange" });
