@@ -1,5 +1,4 @@
 import { useQuery } from "@apollo/client";
-import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { Restaurant } from "../../components/restaurant";
@@ -20,7 +19,6 @@ export const MY_RESTAURANTS_QUERY = graphql(`
 
 export const MyRestaurants = () => {
   const { data } = useQuery<MyRestaurantsQuery>(MY_RESTAURANTS_QUERY);
-  useEffect(() => {});
   return (
     <div>
       <Helmet>

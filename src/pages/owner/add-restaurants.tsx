@@ -1,4 +1,4 @@
-import { useMutation } from "@apollo/client";
+import { useApolloClient, useMutation } from "@apollo/client";
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
@@ -13,6 +13,7 @@ const CREATE_RESTAURANT_MUTATION = graphql(`
     createRestaurant(input: $input) {
       error
       ok
+      restaurantId
     }
   }
 `);
@@ -25,12 +26,41 @@ interface IFormProps {
 }
 
 export const AddRestaurant = () => {
+  const client = useApolloClient();
+  const [imageUrl, setImageUrl] = useState("");
   const onCompleted = (data: CreateRestaurantMutation) => {
     const {
-      createRestaurant: { ok, error },
+      createRestaurant: { ok, restaurantId },
     } = data;
     if (ok) {
+      const { name, categoryName, address } = getValues();
       setUploading(false);
+      const queryResult = client.readQuery({ query: MY_RESTAURANTS_QUERY });
+      if (queryResult) {
+        client.writeQuery({
+          query: MY_RESTAURANTS_QUERY,
+          data: {
+            myRestaurants: {
+              ...queryResult.myRestaurants,
+              restaurants: [
+                {
+                  address,
+                  category: {
+                    name: categoryName,
+                    __typename: "Category",
+                  },
+                  coverImg: imageUrl,
+                  id: restaurantId,
+                  isPromoted: false,
+                  name,
+                  __typename: "Restaurant",
+                },
+                ...queryResult.myRestaurants.restaurants,
+              ],
+            },
+          },
+        });
+      }
     }
   };
   const [createRestaurantMutation, { data }] = useMutation<CreateRestaurantMutation, CreateRestaurantMutationVariables>(CREATE_RESTAURANT_MUTATION, {
@@ -38,7 +68,7 @@ export const AddRestaurant = () => {
     refetchQueries: [{ query: MY_RESTAURANTS_QUERY }],
   });
 
-  const { register, getValues, formState, setError, handleSubmit } = useForm<IFormProps>({ mode: "onChange" });
+  const { register, getValues, formState, handleSubmit } = useForm<IFormProps>({ mode: "onChange" });
   const [uploading, setUploading] = useState(false);
   const onSubmit = async () => {
     try {
