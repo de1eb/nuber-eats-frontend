@@ -16,9 +16,13 @@ export const MY_RESTAURANTS_QUERY = graphql(`
     }
   }
 `);
+interface IParams {
+  id: string;
+}
 
 export const MyRestaurants = () => {
   const { data } = useQuery<MyRestaurantsQuery>(MY_RESTAURANTS_QUERY);
+
   return (
     <div>
       <Helmet>
@@ -38,6 +42,9 @@ export const MyRestaurants = () => {
             {data?.myRestaurants.restaurants.map((restaurant, index) => {
               return <Restaurant key={index} restaurant={restaurant} />;
             })}
+            <Link className="text-lime-600 hover:underline" to="../add-restaurant">
+              Create one &rarr;
+            </Link>
           </div>
         )}
       </div>
