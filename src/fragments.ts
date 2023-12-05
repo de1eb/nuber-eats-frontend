@@ -23,24 +23,20 @@ export const CATEGORY_FRAGMENT = graphql(`
   }
 `)
 
-// const Restaurant_Fragment = graphql(`
-//   fragment RestaurantParts on Restaurant {
-//     id
-//     name
-//     coverImg
-//     category {
-//       name
-//     }
-//     address
-//     isPromoted
-//   }
-// `)
-
-// type RestaurantProps = {
-//   restaurant: FragmentType<typeof Restaurant_Fragment>
-// }
-
-// export function Restaurant(props: RestaurantProps) {
-//   const restaurant = useFragment(Restaurant_Fragment, props.restaurant)
-//   return
-// }
+export const DISH_FRAGMENT = graphql(`
+  fragment DishParts on Dish {
+    id
+    name
+    price
+    photo
+    description
+    options {
+      name
+      extra
+      choices {
+        name
+        extra
+      }
+    }
+  }
+`);

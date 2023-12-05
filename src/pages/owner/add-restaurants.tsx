@@ -47,7 +47,6 @@ export const AddRestaurant = () => {
       const queryResult = client.readQuery({
         query: MY_RESTAURANTS_QUERY,
       });
-      console.log("queryResult: ", queryResult);
       if (queryResult) {
         client.writeQuery({
           query: MY_RESTAURANTS_QUERY,
