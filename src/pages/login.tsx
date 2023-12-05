@@ -1,4 +1,4 @@
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
@@ -6,6 +6,7 @@ import { authTokenVar } from "../apollo";
 import { Button } from "../components/button";
 import { FormError } from "../components/form-error";
 import { LOCALSTORAGE_TOKEN } from "../constants";
+import { graphql } from "../gql";
 import { LoginMutation, LoginMutationVariables } from "../gql/graphql";
 import nuberLogo from "../images/logo.svg";
 
@@ -15,7 +16,7 @@ interface ILoginForm {
   resultError?: string;
 }
 
-const LOGIN_MUTATION = gql`
+const LOGIN_MUTATION = graphql(`
   mutation login($loginInput: LoginInput!) {
     login(input: $loginInput) {
       ok
@@ -23,7 +24,7 @@ const LOGIN_MUTATION = gql`
       error
     }
   }
-`;
+`);
 
 export const Login = () => {
   const {
@@ -55,7 +56,6 @@ export const Login = () => {
       });
     }
   };
-  // return <div>TEST</div>;
   return (
     <div className="h-screen flex items-center flex-col mt-10 lg:mt-28">
       <Helmet>

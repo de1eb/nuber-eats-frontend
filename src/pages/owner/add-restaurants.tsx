@@ -1,4 +1,4 @@
-import { gql, useApolloClient, useMutation } from "@apollo/client";
+import { useApolloClient, useMutation } from "@apollo/client";
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
@@ -19,6 +19,12 @@ const CREATE_RESTAURANT_MUTATION = graphql(`
   }
 `);
 
+// 최적화를 위해 refetch해서 레스토랑 목록을 받아오지 않고 캐시에 방금 추가한 레스토랑
+// 정보를 추가하려고 함. 그런데 graphql-codegen의 fragment masking된 타입을 readQuery하고
+// writeQuery할 때 그대로 적용되기 용이한지 의문. 콘솔상에 많은 에러가 뜨는데 fragmentRef까지
+// 흉내내서 writeQuery 한 경우 표시가 되기는 하나 콘솔상 에러가 사라지는 것은 아님
+// fragment에 해당하는 필드들이 없다고 나오나 graphql-codegen의 모종의 프로세스로 인해 보여지긴하는 것으로 추정
+
 interface IFormProps {
   name: string;
   address: string;
@@ -28,8 +34,8 @@ interface IFormProps {
 
 export const AddRestaurant = () => {
   const client = useApolloClient();
-  const navigate = useNavigate();
   const [imageUrl, setImageUrl] = useState("");
+  const navigate = useNavigate();
   const onCompleted = (data: CreateRestaurantMutation) => {
     const {
       createRestaurant: { ok, restaurantId },
@@ -37,41 +43,32 @@ export const AddRestaurant = () => {
     if (ok) {
       const { name, categoryName, address } = getValues();
       setUploading(false);
-      const queryResult = client.readQuery({ query: MY_RESTAURANTS_QUERY });
+
+      const queryResult = client.readQuery({
+        query: MY_RESTAURANTS_QUERY,
+      });
+      console.log("queryResult: ", queryResult);
       if (queryResult) {
         client.writeQuery({
-          query: gql`
-            query myRestaurants {
-              myRestaurants {
-                ok
-                error
-                restaurants {
-                  id
-                  name
-                  coverImg
-                  category {
-                    name
-                  }
-                  address
-                  isPromoted
-                }
-              }
-            }
-          `,
+          query: MY_RESTAURANTS_QUERY,
           data: {
             myRestaurants: {
               ...queryResult.myRestaurants,
               restaurants: [
                 {
-                  address,
-                  category: {
-                    name: categoryName,
-                    __typename: "Category",
+                  " $fragmentRefs": {
+                    RestaurantPartsFragment: {
+                      address,
+                      category: {
+                        name: categoryName,
+                        __typename: "Category",
+                      },
+                      coverImg: imageUrl,
+                      id: restaurantId,
+                      isPromoted: false,
+                      name,
+                    },
                   },
-                  coverImg: imageUrl,
-                  id: restaurantId,
-                  isPromoted: false,
-                  name,
                   __typename: "Restaurant",
                 },
                 ...queryResult.myRestaurants.restaurants,
@@ -80,15 +77,22 @@ export const AddRestaurant = () => {
           },
         });
       }
+
+      navigate("/home/myrestaurants");
     }
-    navigate("/");
   };
   const [createRestaurantMutation, { data }] = useMutation<CreateRestaurantMutation, CreateRestaurantMutationVariables>(CREATE_RESTAURANT_MUTATION, {
     onCompleted,
     // refetchQueries: [{ query: MY_RESTAURANTS_QUERY }],
   });
-
-  const { register, getValues, formState, handleSubmit } = useForm<IFormProps>({ mode: "onChange" });
+  const {
+    register,
+    getValues,
+    formState: { isValid },
+    handleSubmit,
+  } = useForm<IFormProps>({
+    mode: "onChange",
+  });
   const [uploading, setUploading] = useState(false);
   const onSubmit = async () => {
     try {
@@ -114,9 +118,7 @@ export const AddRestaurant = () => {
           },
         },
       });
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (e) {}
   };
   return (
     <div className="container flex flex-col items-center mt-52">
@@ -131,7 +133,7 @@ export const AddRestaurant = () => {
         <div>
           <input type="file" accept="image/*" {...register("file", { required: true })} />
         </div>
-        <Button loading={uploading} canClick={formState.isValid} actionText="Create Restaurant" />
+        <Button loading={uploading} canClick={isValid} actionText="Create Restaurant" />
         {data?.createRestaurant.error && <FormError errorMessage={data.createRestaurant.error} />}
       </form>
     </div>

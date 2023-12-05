@@ -1,20 +1,21 @@
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../components/button";
 import { FormError } from "../components/form-error";
+import { graphql } from "../gql";
 import { CreateAccountMutation, CreateAccountMutationVariables, UserRole } from "../gql/graphql";
 import nuberLogo from "../images/logo.svg";
 
-const CREATE_ACCOUNT_MUTATION = gql`
+const CREATE_ACCOUNT_MUTATION = graphql(`
   mutation createAccount($createAccountInput: CreateAccountInput!) {
     createAccount(input: $createAccountInput) {
       ok
       error
     }
   }
-`;
+`);
 interface ICreateAccountForm {
   email: string;
   password: string;

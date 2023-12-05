@@ -1,18 +1,19 @@
 import { gql, useApolloClient, useMutation } from "@apollo/client";
 import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
+import { graphql } from "../../gql";
 import { VerifyEmailMutation, VerifyEmailMutationVariables } from "../../gql/graphql";
 import { useMe } from "../../hooks/useMe";
 import { useQueryParams } from "../../hooks/useQueryParams";
 
-const VERIFY_EMAIL_MUTATION = gql`
+const VERIFY_EMAIL_MUTATION = graphql(`
   mutation verifyEmail($input: VerifyEmailInput!) {
     verifyEmail(input: $input) {
       ok
       error
     }
   }
-`;
+`);
 
 export const ConfirmEmail = () => {
   const { data: userData } = useMe();

@@ -2,17 +2,18 @@ import { gql, useApolloClient, useMutation } from "@apollo/client";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 import { Button } from "../../components/button";
+import { graphql } from "../../gql";
 import { EditProfileMutation, EditProfileMutationVariables } from "../../gql/graphql";
 import { useMe } from "../../hooks/useMe";
 
-const EDIT_PROFILE_MUTATION = gql`
+const EDIT_PROFILE_MUTATION = graphql(`
   mutation editProfile($input: EditProfileInput!) {
     editProfile(input: $input) {
       ok
       error
     }
   }
-`;
+`);
 
 interface IFormProps {
   email?: string;
