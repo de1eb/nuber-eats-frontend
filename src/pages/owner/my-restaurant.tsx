@@ -1,7 +1,8 @@
 import { useQuery } from "@apollo/client";
 import { Helmet } from "react-helmet-async";
 import { Link, useParams } from "react-router-dom";
-import { RESTAURANT_FRAGMENT } from "../../fragments";
+import { Dish } from "../../components/dish";
+import { DISH_FRAGMENT, RESTAURANT_FRAGMENT } from "../../fragments";
 import { graphql, useFragment } from "../../gql";
 import { MyRestaurantQuery, MyRestaurantQueryVariables } from "../../gql/graphql";
 
@@ -32,8 +33,8 @@ export const MyRestaurant = () => {
       },
     },
   });
-  console.log(data);
   const restaurant = useFragment(RESTAURANT_FRAGMENT, data?.myRestaurant.restaurant);
+  const menu = useFragment(DISH_FRAGMENT, data?.myRestaurant.restaurant?.menu);
   return (
     <div>
       <Helmet>
@@ -47,13 +48,23 @@ export const MyRestaurant = () => {
       ></div>
       <div className="container mt-10">
         <h2 className="text-4xl font-medium mb-10">{restaurant?.name || "Loading..."}</h2>
-        <Link to={`/restaurants/${id}/add-dish`} className=" mr-8 text-white bg-gray-800 py-3 px-10">
+        <Link to={`/home/myrestaurants/${id}/add-dish`} className=" mr-8 text-white bg-gray-800 py-3 px-10">
           Add Dish &rarr;
         </Link>
         <Link to={``} className=" text-white bg-lime-700 py-3 px-10">
           Buy Promotion &rarr;
         </Link>
-        <div className="mt-10">{data?.myRestaurant.restaurant?.menu.length === 0 ? <h4 className="text-xl mb-5">Please upload a dish!</h4> : null}</div>
+        <div className="mt-10">
+          {data?.myRestaurant.restaurant?.menu?.length === 0 ? (
+            <h4 className="text-xl mb-5">Please upload a dish!</h4>
+          ) : (
+            <div className="grid mt-16 md:grid-cols-3 gap-x-5 gap-y-10">
+              {menu?.map((dish) => (
+                <Dish name={dish.name} description={dish.description} price={dish.price}></Dish>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

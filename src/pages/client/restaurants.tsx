@@ -89,7 +89,7 @@ export const Restaurants = () => {
           </div>
           <div className="grid mt-16 md:grid-cols-3 gap-x-5 gap-y-10">
             {data?.restaurants.results?.map((restaurant, index) => {
-              return <Restaurant key={index} restaurant={restaurant} />;
+              return <Restaurant key={index} restaurant={restaurant} isOwner={false} />;
             })}
           </div>
           <div className="grid grid-cols-3 text-center max-w-md items-center mx-auto mt-10">

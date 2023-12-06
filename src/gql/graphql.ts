@@ -487,7 +487,7 @@ export type Restaurant = {
   createdAt: Scalars['DateTime']['output'];
   id: Scalars['Float']['output'];
   isPromoted: Scalars['Boolean']['output'];
-  menu: Array<Dish>;
+  menu?: Maybe<Array<Dish>>;
   name: Scalars['String']['output'];
   orders: Array<Order>;
   owner: User;
@@ -681,10 +681,10 @@ export type MyRestaurantQueryVariables = Exact<{
 
 
 export type MyRestaurantQuery = { __typename?: 'Query', myRestaurant: { __typename?: 'MyRestaurantOutput', ok: boolean, error?: string | null, restaurant?: (
-      { __typename?: 'Restaurant', menu: Array<(
+      { __typename?: 'Restaurant', menu?: Array<(
         { __typename?: 'Dish' }
         & { ' $fragmentRefs'?: { 'DishPartsFragment': DishPartsFragment } }
-      )> }
+      )> | null }
       & { ' $fragmentRefs'?: { 'RestaurantPartsFragment': RestaurantPartsFragment } }
     ) | null } };
 

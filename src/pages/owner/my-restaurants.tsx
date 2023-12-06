@@ -40,7 +40,7 @@ export const MyRestaurants = () => {
         ) : (
           <div className="grid mt-16 md:grid-cols-3 gap-x-5 gap-y-10">
             {data?.myRestaurants.restaurants.map((restaurant, index) => {
-              return <Restaurant key={index} restaurant={restaurant} />;
+              return <Restaurant key={index} restaurant={restaurant} isOwner={true} />;
             })}
             <Link className="text-lime-600 hover:underline" to="../add-restaurant">
               Create one &rarr;

@@ -9,12 +9,14 @@ import { FragmentType, useFragment } from "../gql";
 // }
 interface IRestaurantProps {
   restaurant: FragmentType<typeof RESTAURANT_FRAGMENT>;
+  isOwner: boolean;
 }
 
 export const Restaurant: React.FC<IRestaurantProps> = (props) => {
   const { id, coverImg, name, category } = useFragment(RESTAURANT_FRAGMENT, props.restaurant);
+  const address = props.isOwner ? `/home/myrestaurants/${id}` : `/home/restaurants/${id}`;
   return (
-    <Link to={`/home/restaurants/${id}`}>
+    <Link to={address}>
       <div className="flex flex-col">
         <div style={{ backgroundImage: `url(${coverImg})` }} className="bg-red-500 bg-cover bg-center mb-3 rounded py-28 mx-2"></div>
         <h3 className="text-xl font-medium mx-2">{name}</h3>
