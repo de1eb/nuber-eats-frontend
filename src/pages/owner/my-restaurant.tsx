@@ -1,8 +1,9 @@
 import { useQuery } from "@apollo/client";
 import { Helmet } from "react-helmet-async";
 import { Link, useParams } from "react-router-dom";
+import { VictoryAxis, VictoryChart, VictoryLabel, VictoryLine, VictoryTheme, VictoryTooltip, VictoryZoomContainer } from "victory";
 import { Dish } from "../../components/dish";
-import { DISH_FRAGMENT, RESTAURANT_FRAGMENT } from "../../fragments";
+import { DISH_FRAGMENT, ORDERS_FRAGMENT, RESTAURANT_FRAGMENT } from "../../fragments";
 import { graphql, useFragment } from "../../gql";
 import { MyRestaurantQuery, MyRestaurantQueryVariables } from "../../gql/graphql";
 
@@ -15,6 +16,9 @@ export const MY_RESTAURANT_QUERY = graphql(`
         ...RestaurantParts
         menu {
           ...DishParts
+        }
+        orders {
+          ...OrderParts
         }
       }
     }
@@ -35,6 +39,7 @@ export const MyRestaurant = () => {
   });
   const restaurant = useFragment(RESTAURANT_FRAGMENT, data?.myRestaurant.restaurant);
   const menu = useFragment(DISH_FRAGMENT, data?.myRestaurant.restaurant?.menu);
+  const order = useFragment(ORDERS_FRAGMENT, data?.myRestaurant.restaurant?.orders);
   return (
     <div>
       <Helmet>
@@ -59,11 +64,41 @@ export const MyRestaurant = () => {
             <h4 className="text-xl mb-5">Please upload a dish!</h4>
           ) : (
             <div className="grid mt-16 md:grid-cols-3 gap-x-5 gap-y-10">
-              {menu?.map((dish) => (
-                <Dish name={dish.name} description={dish.description} price={dish.price}></Dish>
+              {menu?.map((dish, index) => (
+                <Dish key={index} name={dish.name} description={dish.description} price={dish.price} />
               ))}
             </div>
           )}
+        </div>
+        <div className="mt-20 mb-10">
+          <h4 className="text-center text-2xl font-medium">Sales</h4>
+          <div className="mt-10">
+            <VictoryChart height={500} theme={VictoryTheme.material} width={window.innerWidth} domainPadding={50} containerComponent={<VictoryZoomContainer />}>
+              <VictoryLine
+                labels={({ datum }) => `$${datum.y}`}
+                labelComponent={<VictoryTooltip style={{ fontSize: 18 } as any} renderInPortal dy={-20} />}
+                data={order?.map((order) => ({
+                  x: order.createdAt,
+                  y: order.total,
+                }))}
+                interpolation="natural"
+                style={{
+                  data: {
+                    strokeWidth: 5,
+                  },
+                }}
+              />
+              <VictoryAxis
+                tickLabelComponent={<VictoryLabel renderInPortal />}
+                style={{
+                  tickLabels: {
+                    fontSize: 20,
+                  } as any,
+                }}
+                tickFormat={(tick) => new Date(tick).toLocaleDateString("ko")}
+              />
+            </VictoryChart>
+          </div>
         </div>
       </div>
     </div>
