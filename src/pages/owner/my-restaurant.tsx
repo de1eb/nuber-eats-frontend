@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
 import { Helmet } from "react-helmet-async";
 import { Link, useParams } from "react-router-dom";
-import { VictoryAxis, VictoryChart, VictoryLabel, VictoryLine, VictoryTheme, VictoryTooltip, VictoryZoomContainer } from "victory";
+import { VictoryAxis, VictoryChart, VictoryLabel, VictoryLine, VictoryTheme, VictoryZoomContainer } from "victory";
 import { Dish } from "../../components/dish";
 import { DISH_FRAGMENT, ORDERS_FRAGMENT, RESTAURANT_FRAGMENT } from "../../fragments";
 import { graphql, useFragment } from "../../gql";
@@ -76,7 +76,7 @@ export const MyRestaurant = () => {
             <VictoryChart height={500} theme={VictoryTheme.material} width={window.innerWidth} domainPadding={50} containerComponent={<VictoryZoomContainer />}>
               <VictoryLine
                 labels={({ datum }) => `$${datum.y}`}
-                labelComponent={<VictoryTooltip style={{ fontSize: 18 } as any} renderInPortal dy={-20} />}
+                labelComponent={<VictoryLabel style={{ fontSize: 18 }} renderInPortal dy={-20} />}
                 data={order?.map((order) => ({
                   x: order.createdAt,
                   y: order.total,
@@ -92,7 +92,8 @@ export const MyRestaurant = () => {
                 tickLabelComponent={<VictoryLabel renderInPortal />}
                 style={{
                   tickLabels: {
-                    fontSize: 20,
+                    fontSize: 12,
+                    angle: 45,
                   } as any,
                 }}
                 tickFormat={(tick) => new Date(tick).toLocaleDateString("ko")}
