@@ -34,6 +34,7 @@ export const Restaurant = () => {
       },
     },
   });
+  console.log(data);
   const restaurant = useFragment(RESTAURANT_FRAGMENT, data?.restaurant.restaurant);
   const menu = useFragment(DISH_FRAGMENT, data?.restaurant.restaurant?.menu);
   return (

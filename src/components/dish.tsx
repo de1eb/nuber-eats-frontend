@@ -5,7 +5,7 @@ interface IDishProps {
   name: string;
   price: number;
   isCustomer?: boolean;
-  options?: DishOption[];
+  options?: DishOption[] | null;
 }
 
 export const Dish: React.FC<IDishProps> = ({ description, name, price, isCustomer = false, options }) => {
