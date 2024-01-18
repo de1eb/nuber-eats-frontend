@@ -638,9 +638,8 @@ video {
 }
 
 .btn {
-  margin-top: 0.75rem;
   --tw-bg-opacity: 1;
-  background-color: rgb(22 163 74 / var(--tw-bg-opacity));
+  background-color: rgb(101 163 13 / var(--tw-bg-opacity));
   padding-top: 1rem;
   padding-bottom: 1rem;
   font-size: 1.125rem;
@@ -655,7 +654,12 @@ video {
 
 .btn:hover {
   --tw-bg-opacity: 1;
-  background-color: rgb(21 128 61 / var(--tw-bg-opacity));
+  background-color: rgb(77 124 15 / var(--tw-bg-opacity));
+}
+
+.btn:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
 }
 
 .container {
@@ -871,6 +875,10 @@ video {
   flex-direction: column;
 }
 
+.items-end {
+  align-items: flex-end;
+}
+
 .items-center {
   align-items: center;
 }
@@ -1068,8 +1076,12 @@ video {
   padding-bottom: 5rem;
 }
 
-.pl-48 {
-  padding-left: 12rem;
+.pb-32 {
+  padding-bottom: 8rem;
+}
+
+.pl-4 {
+  padding-left: 1rem;
 }
 
 .text-left {
@@ -1235,6 +1247,10 @@ video {
 
   .md\:grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .md\:pl-48 {
+    padding-left: 12rem;
   }
 }
 

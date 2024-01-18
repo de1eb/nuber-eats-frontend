@@ -1,16 +1,31 @@
 import { DishOption } from "../gql/graphql";
 
 interface IDishProps {
+  id?: number;
   description: string;
   name: string;
   price: number;
   isCustomer?: boolean;
+  orderStarted?: boolean;
   options?: DishOption[] | null;
+  addItemToOrder?: (dishId: number) => void;
 }
 
-export const Dish: React.FC<IDishProps> = ({ description, name, price, isCustomer = false, options }) => {
+export const Dish: React.FC<IDishProps> = ({
+  id = 0,
+  description,
+  name,
+  price,
+  isCustomer = false,
+  orderStarted = false,
+  options,
+  addItemToOrder,
+}) => {
   return (
-    <div className="px-8 py-4 border cursor-pointer hover:border-gray-800 transition-all">
+    <div
+      onClick={() => (orderStarted && addItemToOrder ? addItemToOrder(id) : null)}
+      className="px-8 py-4 border cursor-pointer hover:border-gray-800 transition-all"
+    >
       <div className="mb-5">
         <h3 className="text-lg font-medium">{name}</h3>
         <h4 className="font-medium">{description}</h4>
