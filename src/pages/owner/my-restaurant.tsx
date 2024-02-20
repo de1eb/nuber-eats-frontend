@@ -51,7 +51,7 @@ export const MyRestaurant = () => {
           backgroundImage: `url(${restaurant?.coverImg})`,
         }}
       ></div>
-      <div className="container mt-10">
+      <div className="container mt-10 px-3">
         <h2 className="text-4xl font-medium mb-10">{restaurant?.name || "Loading..."}</h2>
         <Link to={`/home/myrestaurants/${id}/add-dish`} className=" mr-8 text-white bg-gray-800 py-3 px-10">
           Add Dish &rarr;
@@ -75,7 +75,7 @@ export const MyRestaurant = () => {
           <div className="mt-10">
             <VictoryChart height={500} theme={VictoryTheme.material} width={window.innerWidth} domainPadding={50} containerComponent={<VictoryZoomContainer />}>
               <VictoryLine
-                labels={({ datum }) => `$${datum.y}`}
+                labels={({ datum }: { datum: any }) => `$${datum.y}`}
                 labelComponent={<VictoryLabel style={{ fontSize: 18 }} renderInPortal dy={-20} />}
                 data={order?.map((order) => ({
                   x: order.createdAt,
