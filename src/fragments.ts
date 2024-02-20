@@ -48,3 +48,20 @@ export const ORDERS_FRAGMENT = graphql(`
     total
   }
 `);
+
+export const FULL_ORDER_FRAGMENT = graphql(`
+  fragment FullOrderParts on Order {
+    id
+    status
+    total
+    driver {
+      email
+    }
+    customer {
+      email
+    }
+    restaurant {
+      name
+    }
+  }
+`)

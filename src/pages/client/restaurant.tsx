@@ -6,7 +6,13 @@ import { Dish } from "../../components/dish";
 import { DishOption } from "../../components/dish-option";
 import { DISH_FRAGMENT, RESTAURANT_FRAGMENT } from "../../fragments";
 import { graphql, useFragment } from "../../gql";
-import { CreateOrderItemInput, CreateOrderMutation, CreateOrderMutationVariables, RestaurantQuery, RestaurantQueryVariables } from "../../gql/graphql";
+import {
+  CreateOrderItemInput,
+  CreateOrderMutation,
+  CreateOrderMutationVariables,
+  RestaurantQuery,
+  RestaurantQueryVariables,
+} from "../../gql/graphql";
 
 const RESTAURANT_QUERY = graphql(`
   query restaurant($input: RestaurantInput!) {
@@ -130,15 +136,22 @@ export const Restaurant = () => {
       createOrder: { ok, orderId },
     } = data;
     if (data.createOrder.ok) {
-      navigate(`/orders/${orderId}`);
+      navigate(`/home/orders/${orderId}`);
     }
   };
 
-  const [createOrderMutation, { loading: placeingOrder }] = useMutation<CreateOrderMutation, CreateOrderMutationVariables>(CREATE_ORDER_MUTATION, {
+  const [createOrderMutation, { loading: placingOrder }] = useMutation<
+    CreateOrderMutation,
+    CreateOrderMutationVariables
+  >(CREATE_ORDER_MUTATION, {
     onCompleted,
   });
 
   const triggerConfirmOrder = () => {
+    if (placingOrder) {
+      return;
+    }
+
     if (orderItems.length === 0) {
       alert("Can't place empty order");
       return;

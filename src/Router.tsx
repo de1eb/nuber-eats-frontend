@@ -9,6 +9,7 @@ import { Search } from "./pages/client/search";
 import { CreateAccount } from "./pages/create-account";
 import { LoggedIn } from "./pages/logged-in";
 import { Login } from "./pages/login";
+import { Order } from "./pages/order";
 import { AddDish } from "./pages/owner/add-dish";
 import { AddRestaurant } from "./pages/owner/add-restaurants";
 import { MyRestaurant } from "./pages/owner/my-restaurant";
@@ -67,6 +68,10 @@ export const router = createBrowserRouter([
           {
             path: "add-restaurant",
             Component: AddRestaurant,
+          },
+          {
+            path: "orders/:id",
+            Component: Order,
           },
         ],
       },
