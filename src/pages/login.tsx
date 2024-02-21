@@ -42,7 +42,10 @@ export const Login = () => {
       authTokenVar(token);
     }
   };
-  const [loginMutation, { data: LoginMutationResult, loading }] = useMutation<LoginMutation, LoginMutationVariables>(LOGIN_MUTATION, { onCompleted });
+  const [loginMutation, { data: LoginMutationResult, loading }] = useMutation<LoginMutation, LoginMutationVariables>(
+    LOGIN_MUTATION,
+    { onCompleted }
+  );
   const onSubmit = () => {
     if (!loading) {
       const { email, password } = getValues();
@@ -77,7 +80,12 @@ export const Login = () => {
           />
           {errors.email?.message && <FormError errorMessage={errors.email?.message} />}
           {errors.email?.type === "pattern" && <FormError errorMessage={"Please enter a valid email"} />}
-          <input {...register("password", { required: "Password is required." })} type="password" placeholder="Password" className="input" />
+          <input
+            {...register("password", { required: "Password is required." })}
+            type="password"
+            placeholder="Password"
+            className="input"
+          />
           {errors.password?.type === "minLength" && <FormError errorMessage="Password must be more than 10 chars." />}
           <Button canClick={isValid} loading={loading} actionText={"Log in"} />
           {LoginMutationResult?.login.error && <FormError errorMessage={LoginMutationResult.login.error} />}

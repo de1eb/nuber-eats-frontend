@@ -1,14 +1,19 @@
-import { useQuery, useSubscription } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
+import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { useParams } from "react-router-dom";
 import { FULL_ORDER_FRAGMENT } from "../fragments";
 import { graphql, useFragment } from "../gql";
 import {
+  EditOrderMutation,
+  EditOrderMutationVariables,
   GetOrderQuery,
   GetOrderQueryVariables,
+  OrderStatus,
   OrderUpdatesSubscription,
-  OrderUpdatesSubscriptionVariables,
+  UserRole,
 } from "../gql/graphql";
+import { useMe } from "../hooks/useMe";
 
 const GET_ORDER = graphql(`
   query getOrder($input: GetOrderInput!) {
@@ -30,13 +35,24 @@ const ORDER_SUBSCRIPTION = graphql(`
   }
 `);
 
+const EDIT_ORDER = graphql(`
+  mutation editOrder($input: EditOrderInput!) {
+    editOrder(input: $input) {
+      ok
+      error
+    }
+  }
+`);
+
 type TParams = {
   id: string;
 };
 
 export const Order = () => {
   const params = useParams() as TParams;
-  const { data } = useQuery<GetOrderQuery, GetOrderQueryVariables>(GET_ORDER, {
+  const { data: userData } = useMe();
+  const [editOrderMutation] = useMutation<EditOrderMutation, EditOrderMutationVariables>(EDIT_ORDER);
+  const { data, subscribeToMore } = useQuery<GetOrderQuery, GetOrderQueryVariables>(GET_ORDER, {
     variables: {
       input: {
         id: +params.id,
@@ -44,16 +60,45 @@ export const Order = () => {
     },
   });
   const order = useFragment(FULL_ORDER_FRAGMENT, data?.getOrder.order);
-  const { data: subscriptionData } = useSubscription<OrderUpdatesSubscription, OrderUpdatesSubscriptionVariables>(
-    ORDER_SUBSCRIPTION,
-    {
+
+  useEffect(() => {
+    if (data?.getOrder.ok) {
+      subscribeToMore({
+        document: ORDER_SUBSCRIPTION,
+        variables: {
+          input: {
+            id: +params.id,
+          },
+        },
+        updateQuery: (
+          prev,
+          { subscriptionData: { data } }: { subscriptionData: { data: OrderUpdatesSubscription } }
+        ) => {
+          if (!data) return prev;
+          return {
+            getOrder: {
+              ...prev.getOrder,
+              order: {
+                ...data.orderUpdates,
+              },
+            },
+          };
+        },
+      });
+    }
+  }, [data]);
+
+  const onButtonClick = (newStatus: OrderStatus) => {
+    editOrderMutation({
       variables: {
         input: {
           id: +params.id,
+          status: newStatus,
         },
       },
-    }
-  );
+    });
+  };
+
   return (
     <div className="mt-32 container flex justify-center">
       <Helmet>
@@ -72,7 +117,26 @@ export const Order = () => {
           <div className="border-t border-b py-5 border-gray-700">
             Driver: <span className="font-medium">{order?.driver?.email || "Not yet."}</span>
           </div>
-          <span className=" text-center mt-5 mb-3  text-2xl text-lime-600">Status: {order?.status}</span>
+          {userData?.me.role === "Client" && (
+            <span className="text-center mt-5 mb-3 text-2xl text-lime-600">Status: {order?.status}</span>
+          )}
+          {userData?.me.role === UserRole.Owner && (
+            <>
+              {order?.status === OrderStatus.Pending && (
+                <button onClick={() => onButtonClick(OrderStatus.Cooking)} className="btn">
+                  Accept Order
+                </button>
+              )}
+              {order?.status === OrderStatus.Cooking && (
+                <button onClick={() => onButtonClick(OrderStatus.Cooked)} className="btn">
+                  Order Cooked
+                </button>
+              )}
+              {order?.status !== OrderStatus.Cooking && order?.status !== OrderStatus.Pending && (
+                <span className="text-center mt-5 mb-3 text-2xl text-lime-600">Status : {order?.status}</span>
+              )}
+            </>
+          )}
         </div>
       </div>
     </div>
