@@ -35,8 +35,11 @@ const SEARCH_RESTAURANT = graphql(`
 export const Search = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [callQuery, { loading, data, called }] = useLazyQuery<SearchRestaurantQuery, SearchRestaurantQueryVariables>(SEARCH_RESTAURANT);
+  const [callQuery, { loading, data, called }] = useLazyQuery<SearchRestaurantQuery, SearchRestaurantQueryVariables>(
+    SEARCH_RESTAURANT
+  );
   useEffect(() => {
+    // eslint-disable-next-line
     const [_, query] = location.search.split("?term=");
     if (!query) {
       return navigate("/", { replace: true });

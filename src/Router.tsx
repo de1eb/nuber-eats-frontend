@@ -7,6 +7,7 @@ import { Restaurant } from "./pages/client/restaurant";
 import { Restaurants } from "./pages/client/restaurants";
 import { Search } from "./pages/client/search";
 import { CreateAccount } from "./pages/create-account";
+import { Dashboard } from "./pages/driver/dashboard";
 import { LoggedIn } from "./pages/logged-in";
 import { Login } from "./pages/login";
 import { Order } from "./pages/order";
@@ -72,6 +73,10 @@ export const router = createBrowserRouter([
           {
             path: "orders/:id",
             Component: Order,
+          },
+          {
+            path: "location",
+            Component: Dashboard,
           },
         ],
       },

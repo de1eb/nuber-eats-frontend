@@ -16,9 +16,6 @@ export const MY_RESTAURANTS_QUERY = graphql(`
     }
   }
 `);
-interface IParams {
-  id: string;
-}
 
 export const MyRestaurants = () => {
   const { data } = useQuery<MyRestaurantsQuery>(MY_RESTAURANTS_QUERY);
