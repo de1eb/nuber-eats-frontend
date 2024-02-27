@@ -1,5 +1,27 @@
+import { useMutation, useSubscription } from "@apollo/client";
 import GoogleMapReact from "google-map-react";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { FULL_ORDER_FRAGMENT } from "../../fragments";
+import { graphql, useFragment } from "../../gql";
+import { CookedOrderSubscription, TakeOrderMutation, TakeOrderMutationVariables } from "../../gql/graphql";
+
+const COOKED_ORDER_SUBSCRIPTION = graphql(`
+  subscription cookedOrder {
+    cookedOrder {
+      ...FullOrderParts
+    }
+  }
+`);
+
+const TAKE_ORDER_MUTATION = graphql(`
+  mutation takeOrder($input: TakeOrderInput!) {
+    takeOrder(input: $input) {
+      ok
+      error
+    }
+  }
+`);
 
 interface ICoords {
   lat: number;
@@ -51,7 +73,7 @@ export const Dashboard = () => {
     setMap(map);
     setMaps(maps);
   };
-  const onGetRouteClick = () => {
+  const makeRoute = () => {
     if (map) {
       const directionsService = new google.maps.DirectionsService();
       const directionsRenderer = new google.maps.DirectionsRenderer({
@@ -70,7 +92,7 @@ export const Dashboard = () => {
           destination: {
             location: new google.maps.LatLng(driverCoords.lat + 0.05, driverCoords.lat + 0.05),
           },
-          travelMode: google.maps.TravelMode.TRANSIT,
+          travelMode: google.maps.TravelMode.DRIVING,
         },
         (result) => {
           directionsRenderer.setDirections(result);
@@ -85,7 +107,33 @@ export const Dashboard = () => {
     },
     zoom: 16,
   };
+  const { data: cookedOrderData } = useSubscription<CookedOrderSubscription>(COOKED_ORDER_SUBSCRIPTION);
+  const cookedOrder = useFragment(FULL_ORDER_FRAGMENT, cookedOrderData?.cookedOrder);
 
+  useEffect(() => {
+    if (cookedOrder?.id) {
+      makeRoute();
+    }
+  }, [cookedOrderData]);
+
+  const navigate = useNavigate();
+  const onCompleted = (data: TakeOrderMutation) => {
+    if (data.takeOrder.ok) {
+      navigate(`/home/orders/${cookedOrder?.id}`);
+    }
+  };
+  const [takeOrderMutation] = useMutation<TakeOrderMutation, TakeOrderMutationVariables>(TAKE_ORDER_MUTATION, {
+    onCompleted,
+  });
+  const triggerMutation = (orderId: number) => {
+    takeOrderMutation({
+      variables: {
+        input: {
+          id: orderId,
+        },
+      },
+    });
+  };
   return (
     // Important! Always set the container height explicitly
     <div>
@@ -97,11 +145,21 @@ export const Dashboard = () => {
           bootstrapURLKeys={{ key: "AIzaSyAhhjSSE9axWLxS_auF5td_sM44t-F9u-w" }}
           defaultCenter={defaultProps.center}
           defaultZoom={defaultProps.zoom}
-        >
-          {/* <Driver lat={driverCoords.lat} lng={driverCoords.lng} /> */}
-        </GoogleMapReact>
+        ></GoogleMapReact>
       </div>
-      <button onClick={onGetRouteClick}>Get route</button>
+      <div className="max-w-screen-sm mx-auto bg-white relative -top-10 shadow-lg py-8 px-5">
+        {cookedOrder?.restaurant ? (
+          <>
+            <h1 className="text-center text-3xl font-medium">New Coocked Order</h1>
+            <h1 className="text-center my8-3 text-2xl font-medium">Pick it up soon @ {cookedOrder.restaurant.name}</h1>
+            <button onClick={() => triggerMutation(cookedOrder.id)} className="btn w-full block text-center mt-5">
+              Accept Challenge &rarr;
+            </button>
+          </>
+        ) : (
+          <h1 className="text-center text-3xl">No orders yet..</h1>
+        )}
+      </div>
     </div>
   );
 };
