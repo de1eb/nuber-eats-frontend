@@ -29,10 +29,6 @@ export const router = createBrowserRouter([
         Component: LoggedIn,
         children: [
           {
-            path: "confirm",
-            Component: ConfirmEmail,
-          },
-          {
             path: "restaurants",
             Component: Restaurants,
           },
@@ -79,6 +75,10 @@ export const router = createBrowserRouter([
         path: "create-account",
         Component: CreateAccount,
         errorElement: <FormError errorMessage="Cannot create account" />,
+      },
+      {
+        path: "confirm",
+        Component: ConfirmEmail,
       },
     ],
     errorElement: <FormError errorMessage="Cannot load main page" />,
