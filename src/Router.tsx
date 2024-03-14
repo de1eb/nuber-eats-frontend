@@ -74,6 +74,10 @@ export const router = createBrowserRouter([
             path: "location",
             Component: Dashboard,
           },
+          {
+            path: "confirm",
+            Component: ConfirmEmail,
+          },
         ],
       },
       {
@@ -85,10 +89,6 @@ export const router = createBrowserRouter([
         path: "create-account",
         Component: CreateAccount,
         errorElement: <FormError errorMessage="Cannot create account" />,
-      },
-      {
-        path: "confirm",
-        Component: ConfirmEmail,
       },
     ],
     errorElement: <FormError errorMessage="Cannot load main page" />,
