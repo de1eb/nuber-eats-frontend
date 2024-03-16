@@ -10,11 +10,11 @@ export const authTokenVar = makeVar(token);
 // export const isLoggedInVar = makeVar(false);
 
 const httpLink = createHttpLink({
-  uri: process.env.NODE_ENV === "production" ? "https://alb-549571255.ap-northeast-2.elb.amazonaws.com/graphql" : "http://localhost:4000/graphql"
+  uri: process.env.NODE_ENV === "production" ? "https://13.209.43.1/graphql" : "http://localhost:4000/graphql"
 });
 
 const wsLink = new GraphQLWsLink(createClient({
-  url: process.env.NODE_ENV === "production" ? "wss://alb-549571255.ap-northeast-2.elb.amazonaws.com/graphql" : "ws://localhost:4000/graphql",
+  url: process.env.NODE_ENV === "production" ? "wss://13.209.43.1/graphql" : "ws://localhost:4000/graphql",
   connectionParams: {
     "x-jwt": localStorage.getItem(LOCALSTORAGE_TOKEN) || ""
   }
