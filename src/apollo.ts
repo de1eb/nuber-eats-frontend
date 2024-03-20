@@ -3,18 +3,18 @@ import { setContext } from "@apollo/client/link/context";
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { getMainDefinition } from "@apollo/client/utilities";
 import { createClient } from "graphql-ws";
-import { LOCALSTORAGE_TOKEN } from "./constants";
+import { BACKEND_ADDRESS, BACKEND_PORT, LOCALSTORAGE_TOKEN } from "./constants";
 
 const token = localStorage.getItem(LOCALSTORAGE_TOKEN);
 export const authTokenVar = makeVar(token);
 // export const isLoggedInVar = makeVar(false);
 
 const httpLink = createHttpLink({
-  uri: process.env.NODE_ENV === "production" ? "https://13.209.43.1/graphql" : "http://localhost:4000/graphql"
+  uri: process.env.NODE_ENV === "production" ? `https://${BACKEND_ADDRESS}}:${BACKEND_PORT}/graphql` : "http://localhost:4000/graphql"
 });
 
 const wsLink = new GraphQLWsLink(createClient({
-  url: process.env.NODE_ENV === "production" ? "wss://13.209.43.1/graphql" : "ws://localhost:4000/graphql",
+  url: process.env.NODE_ENV === "production" ? `wss://${BACKEND_ADDRESS}}:${BACKEND_PORT}/graphql` : "ws://localhost:4000/graphql",
   connectionParams: {
     "x-jwt": localStorage.getItem(LOCALSTORAGE_TOKEN) || ""
   }

@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../components/button";
 import { FormError } from "../../components/form-error";
+import { BACKEND_ADDRESS, BACKEND_PORT } from "../../constants";
 import { graphql } from "../../gql";
 import { CreateRestaurantMutation, CreateRestaurantMutationVariables } from "../../gql/graphql";
 import { MY_RESTAURANTS_QUERY } from "./my-restaurants";
@@ -101,7 +102,7 @@ export const AddRestaurant = () => {
       const formBody = new FormData();
       formBody.append("file", actualFile);
       const { url: coverImg } = await (
-        await fetch("http://localhost:4000/uploads/", {
+        await fetch(`https://${BACKEND_ADDRESS}:${BACKEND_PORT}/uploads/`, {
           method: "POST",
           body: formBody,
         })
