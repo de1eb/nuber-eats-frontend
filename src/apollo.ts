@@ -10,11 +10,11 @@ export const authTokenVar = makeVar(token);
 // export const isLoggedInVar = makeVar(false);
 
 const httpLink = createHttpLink({
-  uri: process.env.NODE_ENV === "production" ? `https://${BACKEND_ADDRESS}}:${BACKEND_PORT}/graphql` : "http://localhost:4000/graphql"
+  uri: process.env.NODE_ENV === "production" ? `https://${BACKEND_ADDRESS}:${BACKEND_PORT}/graphql` : "http://localhost:4000/graphql"
 });
 
 const wsLink = new GraphQLWsLink(createClient({
-  url: process.env.NODE_ENV === "production" ? `wss://${BACKEND_ADDRESS}}:${BACKEND_PORT}/graphql` : "ws://localhost:4000/graphql",
+  url: process.env.NODE_ENV === "production" ? `wss://${BACKEND_ADDRESS}:${BACKEND_PORT}/graphql` : "ws://localhost:4000/graphql",
   connectionParams: {
     "x-jwt": localStorage.getItem(LOCALSTORAGE_TOKEN) || ""
   }
