@@ -1,6 +1,7 @@
 import { gql, useApolloClient, useMutation } from "@apollo/client";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { Button } from "../../components/button";
 import { graphql } from "../../gql";
 import { EditProfileMutation, EditProfileMutationVariables } from "../../gql/graphql";
@@ -21,6 +22,7 @@ interface IFormProps {
 }
 
 export const EditProfile = () => {
+  const navigate = useNavigate();
   const { data: userData } = useMe();
   const client = useApolloClient();
   const onCompleted = (data: EditProfileMutation) => {
@@ -67,13 +69,16 @@ export const EditProfile = () => {
       },
     });
   };
+  const onClickCancel = () => {
+    navigate("/home/myrestaurants");
+  };
   return (
     <div className="mt-52 flex flex-col justify-center items-center px-5">
       <Helmet>
         <title>Edit Profile | Nuber Eats</title>
       </Helmet>
       <h4 className="font-semibold text-2xl mb-3">Edit Profile</h4>
-      <form name="editProfile" onSubmit={handleSubmit(onSubmit)} className="grid max-w-screen-sm gap-3 mt-5 w-full mb-5">
+      <form name="editProfile" onSubmit={handleSubmit(onSubmit)} className="grid max-w-screen-sm gap-3 mt-5 w-full mb-1 mr-1 ml-1">
         <input
           {...register("email", {
             pattern:
@@ -85,6 +90,9 @@ export const EditProfile = () => {
         />
         <input {...register("password")} className="input" type="password" placeholder="Password" />
         <Button loading={loading} canClick={isValid} actionText="Save Profile" />
+      </form>
+      <form onClick={onClickCancel} className="grid max-w-screen-sm gap-3 mt-2 w-full mb-5 mr-1 ml-1">
+        <Button loading={false} canClick={true} actionText="Cancel" />
       </form>
     </div>
   );

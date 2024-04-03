@@ -71,10 +71,10 @@ export const MyRestaurant = () => {
       <div className="container mt-10 px-3">
         <h2 className="text-4xl font-medium mb-10">{restaurant?.name || "Loading..."}</h2>
         <Link to={`/home/myrestaurants/${id}/add-dish`} className=" mr-8 text-white bg-gray-800 py-3 px-10">
-          Add Dish &rarr;
+          Add Dish
         </Link>
         <Link to={``} className=" text-white bg-lime-700 py-3 px-10">
-          Buy Promotion &rarr;
+          Buy Promotion
         </Link>
         <div className="mt-10">
           {data?.myRestaurant.restaurant?.menu?.length === 0 ? (
@@ -90,13 +90,7 @@ export const MyRestaurant = () => {
         <div className="mt-20 mb-10">
           <h4 className="text-center text-2xl font-medium">Sales</h4>
           <div className="mt-10">
-            <VictoryChart
-              height={500}
-              theme={VictoryTheme.material}
-              width={window.innerWidth}
-              domainPadding={50}
-              containerComponent={<VictoryZoomContainer />}
-            >
+            <VictoryChart height={500} theme={VictoryTheme.material} width={window.innerWidth} domainPadding={50} containerComponent={<VictoryZoomContainer />}>
               <VictoryLine
                 labels={({ datum }: { datum: any }) => `$${datum.y}`}
                 labelComponent={<VictoryLabel style={{ fontSize: 18 }} renderInPortal dy={-20} />}

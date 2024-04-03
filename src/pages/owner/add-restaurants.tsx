@@ -94,7 +94,7 @@ export const AddRestaurant = () => {
     mode: "onChange",
   });
   const [uploading, setUploading] = useState(false);
-  const onSubmit = async () => {
+  const onSubmitCreateRestaurant = async () => {
     try {
       setUploading(true);
       const { file, name, categoryName, address } = getValues();
@@ -120,13 +120,16 @@ export const AddRestaurant = () => {
       });
     } catch (e) {}
   };
+  const onClickCancel = () => {
+    navigate("/home/myrestaurants");
+  };
   return (
     <div className="container flex flex-col items-center mt-52">
       <Helmet>
         <title>Add Restaurant | Nuber Eats</title>
       </Helmet>
       <h4 className="font-semibold text-2xl mb-3">Add Restaurant</h4>
-      <form onSubmit={handleSubmit(onSubmit)} className="grid max-w-screen-sm gap-3 mt-5 w-full mb-5">
+      <form onSubmit={handleSubmit(onSubmitCreateRestaurant)} className="grid max-w-screen-sm gap-3 mt-5 w-full mb-1 mr-1 ml-1">
         <input className="input" type="text" placeholder="Name" {...register("name", { required: "Name is required" })} />
         <input className="input" type="text" placeholder="Address" {...register("address", { required: "Address is required" })} />
         <input className="input" type="text" placeholder="Category Name" {...register("categoryName", { required: "Category Name is required" })} />
@@ -135,6 +138,9 @@ export const AddRestaurant = () => {
         </div>
         <Button loading={uploading} canClick={isValid} actionText="Create Restaurant" />
         {data?.createRestaurant.error && <FormError errorMessage={data.createRestaurant.error} />}
+      </form>
+      <form onClick={onClickCancel} className="grid max-w-screen-sm gap-3 mt-2 w-full mb-5 mr-1 ml-1">
+        <Button loading={false} canClick={true} actionText="Cancel" />
       </form>
     </div>
   );
