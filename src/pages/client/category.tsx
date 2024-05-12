@@ -35,7 +35,6 @@ type TCategoryParams = {
 export const Category = () => {
   const [page, setPage] = useState(1);
   const params = useParams() as TCategoryParams;
-  console.log("params: ", params);
   const { data, loading } = useQuery<CategoryQuery, CategoryQueryVariables>(CATEGORY_QUERY, {
     variables: {
       input: {
@@ -44,8 +43,6 @@ export const Category = () => {
       },
     },
   });
-  console.log("data: ", data);
-  // const restaurants = useFragment(RESTAURANT_FRAGMENT, data?.category.restaurants);
 
   const onNextPageClick = () => setPage((current) => current + 1);
   const onPrevPageClick = () => setPage((current) => current - 1);
